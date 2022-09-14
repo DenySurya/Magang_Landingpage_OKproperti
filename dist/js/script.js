@@ -24,54 +24,49 @@ window.addEventListener('click', function (e) {
         navMenu.classList.add('hidden');
     }
 });
+
 // darkmode
-// const darkToggle = document.querySelector('#dark-toggle');
-// function darkThemeToggle() {
+const sunIcon = document.querySelector(".sun");
+const moonIcon = document.querySelector(".moon");
 
-//     if (localStorage.getItem("theme") === "dark") {
-//         localStorage.setItem("theme", "light");
-//         document.documentElement.classList.remove("dark");
+const userTheme = localStorage.getItem("theme");
+const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-//     } else {
-//         localStorage.setItem("theme", "dark");
-//         document.documentElement.classList.add("dark");
-//     }
-// }
+const iconToggle = () => {
+    moonIcon.classList.toggle("display-none");
+    sunIcon.classList.toggle("display-none");
+};
 
-// document.querySelector("button").addEventListener("click", darkToggle);
-
-// if (localStorage.getItem("theme") === "dark") {
-//     localStorage.setItem("theme", "light");
-//     document.documentElement.classList.remove("dark");
-
-// }
-
-const darkToggle = document.querySelector('#dark-toggle');
-const html = document.querySelector('html');
-
-
-darkToggle.addEventListener('click', function () {
-    // if (darkToggle.checked) {
-    //     html.classList.add('dark');
-    // } else {
-    //     html.classList.remove('dark');
-    // }
-    if (localStorage.getItem("theme") === "dark") {
-        localStorage.setItem("theme", "light");
-        document.documentElement.classList.remove("dark");
-
-    } else {
-        localStorage.setItem("theme", "dark");
+const themeCheck = () => {
+    if (userTheme === "dark" || (!userTheme && systemTheme)) {
         document.documentElement.classList.add("dark");
+        moonIcon.classList.add("display-none");
+        return;
     }
-});
-document.querySelector("button").addEventListener("click", darkToggle);
+    sunIcon.classList.add("display-none");
+};
 
-if (localStorage.getItem("theme") === "dark") {
-    localStorage.setItem("theme", "light");
+const themeSwitch = () => {
+    if (document.documentElement.classList.contains("dark")) {
+        document.documentElement.classList.remove("dark");
+        localStorage.setItem("theme", "light");
+        iconToggle();
+        return;
+    }
     document.documentElement.classList.add("dark");
-}
+    localStorage.setItem("theme", "dark");
+    iconToggle();
+};
 
+sunIcon.addEventListener("click", () => {
+    themeSwitch();
+});
+
+moonIcon.addEventListener("click", () => {
+    themeSwitch();
+});
+
+themeCheck();
 
 // SLIDE IMAGE DETAIL PRODUK
 const swiper = new Swiper('.swiper', {
